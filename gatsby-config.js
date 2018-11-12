@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Default Starter',
+    title: 'Melbourne Weekend Coders Club',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
