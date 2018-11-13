@@ -1,6 +1,7 @@
 import React from 'react'
 import { StaticQuery, graphql } from 'gatsby'
 import Img from 'gatsby-image'
+import { withStyles } from '@material-ui/core/styles';
 
 /*
  * This component is built using `gatsby-image` to automatically serve optimized
@@ -13,20 +14,45 @@ import Img from 'gatsby-image'
  * - `StaticQuery`: https://gatsby.app/staticquery
  */
 
-const Image = () => (
+
+
+
+const Image = ({ name }) => (
   <StaticQuery
     query={graphql`
-      query {
-        placeholderImage: file(relativePath: { eq: "gatsby-astronaut.png" }) {
-          childImageSharp {
-            fluid(maxWidth: 300) {
-              ...GatsbyImageSharpFluid
-            }
-          }
+
+    fragment squareImage on File {
+      childImageSharp {
+        fluid(maxWidth: 200, maxHeight: 200) {
+          ...GatsbyImageSharpFluid
         }
       }
-    `}
-    render={data => <Img fluid={data.placeholderImage.childImageSharp.fluid} />}
+    }
+query {
+  placeholderImage: file(relativePath: { eq: "gatsby-astronaut.png" }) {
+    childImageSharp {
+      fluid(maxWidth: 300) {
+              ...GatsbyImageSharpFluid
+      }
+    }
+  }
+
+  david: file(relativePath: { eq: "david.jpg" }) {
+    ...squareImage
+  }
+  jordy: file(relativePath: { eq: "jordy.jpg" }) {
+    ...squareImage
+  }
+
+}
+`}
+    render={data => <div style={{
+      height: 200,
+      width: 200,
+    }}> <Img fluid={data[name].childImageSharp.fluid} /> </div>}
   />
 )
+
+
+
 export default Image
