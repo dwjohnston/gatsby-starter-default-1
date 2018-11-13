@@ -1,33 +1,42 @@
 import React from 'react'
-import { Link } from 'gatsby'
 
-const Header = ({ siteTitle }) => (
-  <div
-    style={{
-      background: 'rebeccapurple',
-      marginBottom: '1.45rem',
-    }}
-  >
-    <div
-      style={{
-        margin: '0 auto',
-        maxWidth: 960,
-        padding: '1.45rem 1.0875rem',
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: 'white',
-            textDecoration: 'none',
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </div>
-)
+import { withStyles } from '@material-ui/core/styles';
+import * as Routes from "../pages/routes";
+import H1 from './generic/typography/H1';
+import Link from './generic/typography/Link';
+import Button from './generic/typography/Button';
 
-export default Header
+const Header = ({ classes, siteTitle }) => {
+  return (
+    <header className={classes.root}>
+      <div>
+        <Link to={Routes.HOME}> <H1>{siteTitle}</H1></Link>
+      </div>
+      <nav className={classes.nav}>
+
+        <Button component={Link} to={Routes.ABOUT} variant="contained" >
+          About Us
+        </Button>
+
+      </nav>
+    </header>
+  );
+};
+
+const styles = theme => ({
+  root: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+
+    padding: 20,
+  },
+  nav: {
+    display: "flex",
+    flexFlow: "row nowrap",
+    justifyContent: "flex-end",
+  }
+});
+
+export default withStyles(styles)(
+  Header
+);

@@ -23,19 +23,14 @@ const Image = ({ name }) => (
 
     fragment squareImage on File {
       childImageSharp {
-        fluid(maxWidth: 200, maxHeight: 200) {
-          ...GatsbyImageSharpFluid
+        fixed(width: 200, height: 200)  {
+          ...GatsbyImageSharpFixed
         }
       }
     }
+
+
 query {
-  placeholderImage: file(relativePath: { eq: "gatsby-astronaut.png" }) {
-    childImageSharp {
-      fluid(maxWidth: 300) {
-              ...GatsbyImageSharpFluid
-      }
-    }
-  }
 
   david: file(relativePath: { eq: "david.jpg" }) {
     ...squareImage
@@ -44,12 +39,21 @@ query {
     ...squareImage
   }
 
+
+  homepage: file(relativePath: {eq: "team.jpg"}){
+    childImageSharp {
+      fluid(maxWidth: 1040) {
+        ...GatsbyImageSharpFluid
+      }
+    }
+  }
+
 }
 `}
-    render={data => <div style={{
-      height: 200,
-      width: 200,
-    }}> <Img fluid={data[name].childImageSharp.fluid} /> </div>}
+    render={data => <Img
+      fixed={data[name].childImageSharp.fixed}
+      fluid={data[name].childImageSharp.fluid}
+    />}
   />
 )
 
