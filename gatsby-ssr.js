@@ -1,49 +1,36 @@
-const React = require('react')
-const { renderToString } = require('react-dom/server')
-const JssProvider = require('react-jss/lib/JssProvider').default
-const getPageContext = require('./src/getPageContext').default
-const CssBaseline = require('@material-ui/core/CssBaseline')
-//import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
+/* eslint-disable react/prop-types, react/no-danger */
 
+const React = require('react');
+const { renderToString } = require('react-dom/server');
+const JssProvider = require('react-jss/lib/JssProvider').default;
+const getPageContext = require('./src/getPageContext').default;
 
-exports.replaceRenderer = ({
-    bodyComponent,
-    replaceBodyHTMLString,
-    setHeadComponents,
-}) => {
+function replaceRenderer({ bodyComponent, replaceBodyHTMLString, setHeadComponents }) {
+    // Get the context of the page to collected side effects.
+    const muiPageContext = getPageContext();
 
-    //const sheet = new ServerStyleSheet(); //styled-components
-
-    const pageContext = getPageContext();
-
-    const app = (
-        <JssProvider registry={pageContext.sheetsRegistry} generateClassName={pageContext.generateClassName} >
-
-
-            {/* <StyleSheetManager sheet={sheet.instance}>
-                {React.cloneElement(bodyComponent, {
-                    pageContext,
-                })} */}
-
-            {React.cloneElement(bodyComponent, {
-                pageContext
-            })}
-            {/* </StyleSheetManager> */}
-        </JssProvider >
+    const bodyHTML = renderToString(
+        <JssProvider registry={muiPageContext.sheetsRegistry}>{bodyComponent}</JssProvider>,
     );
 
-    const body = renderToString(app);
-
-    replaceBodyHTMLString(body);
+    replaceBodyHTMLString(bodyHTML);
     setHeadComponents([
         <style
             type="text/css"
-            id="server-side-jss"
-            key="server-side-jss"
-            dangerouslySetInnerHTML={{ __html: pageContext.sheetsRegistry.toString() }}
-        />
-        //sheet.getStyleElement()
+            id="jss-server-side"
+            key="jss-server-side"
+            dangerouslySetInnerHTML={{ __html: muiPageContext.sheetsRegistry.toString() }}
+        />,
     ]);
+}
 
-    return;
-};
+exports.replaceRenderer = replaceRenderer;
+
+// It's not ready yet: https://github.com/gatsbyjs/gatsby/issues/8237.
+//
+// const withRoot = require('./src/withRoot').default;
+// const WithRoot = withRoot(props => props.children);
+
+// exports.wrapRootElement = ({ element }) => {
+//   return <WithRoot>{element}</WithRoot>;
+// };
