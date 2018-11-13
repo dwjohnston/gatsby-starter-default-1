@@ -1,36 +1,37 @@
-/* eslint-disable react/prop-types, react/no-danger */
 
-const React = require('react');
-const { renderToString } = require('react-dom/server');
-const JssProvider = require('react-jss/lib/JssProvider').default;
-const getPageContext = require('./src/getPageContext').default;
+const React = require('react')
+const { renderToString } = require('react-dom/server')
+const { JssProvider } = require('react-jss')
+const { getPageContext } = require('./src/getPageContext')
 
-function replaceRenderer({ bodyComponent, replaceBodyHTMLString, setHeadComponents }) {
+exports.replaceRenderer = ({
+    bodyComponent,
+    replaceBodyHTMLString,
+    setHeadComponents
+}) => {
     // Get the context of the page to collected side effects.
-    const muiPageContext = getPageContext();
+    const pageContext = getPageContext()
 
     const bodyHTML = renderToString(
-        <JssProvider registry={muiPageContext.sheetsRegistry}>{bodyComponent}</JssProvider>,
-    );
+        <JssProvider
+            registry={pageContext.sheetsRegistry}
+            generateClassName={pageContext.generateClassName}
+        >
+            {React.cloneElement(bodyComponent, {
+                pageContext
+            })}
+        </JssProvider>
+    )
 
-    replaceBodyHTMLString(bodyHTML);
+    replaceBodyHTMLString(bodyHTML)
     setHeadComponents([
         <style
             type="text/css"
-            id="jss-server-side"
-            key="jss-server-side"
-            dangerouslySetInnerHTML={{ __html: muiPageContext.sheetsRegistry.toString() }}
-        />,
-    ]);
+            id="server-side-jss"
+            key="server-side-jss"
+            dangerouslySetInnerHTML={{
+                __html: pageContext.sheetsRegistry.toString()
+            }}
+        />
+    ])
 }
-
-exports.replaceRenderer = replaceRenderer;
-
-// It's not ready yet: https://github.com/gatsbyjs/gatsby/issues/8237.
-//
-// const withRoot = require('./src/withRoot').default;
-// const WithRoot = withRoot(props => props.children);
-
-// exports.wrapRootElement = ({ element }) => {
-//   return <WithRoot>{element}</WithRoot>;
-// };
