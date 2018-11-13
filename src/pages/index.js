@@ -11,4 +11,4 @@ const IndexPage = () => (
   </Layout>
 )
 
-export default withPage(IndexPage)
+export default withRoot(IndexPage)
