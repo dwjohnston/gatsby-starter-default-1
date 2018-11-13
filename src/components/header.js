@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { withStyles } from '@material-ui/core/styles';
-import * as Routes from "../pages/routes";
+import * as Routes from "../routes";
 import H1 from './generic/typography/H1';
 import Link from './generic/typography/Link';
 import Button from './generic/typography/Button';
