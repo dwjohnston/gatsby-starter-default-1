@@ -2,7 +2,7 @@ const React = require('react')
 const { renderToString } = require('react-dom/server')
 const JssProvider = require('react-jss/lib/JssProvider').default
 const getPageContext = require('./src/getPageContext').default
-
+const CssBaseline = require('@material-ui/core/CssBaseline')
 //import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 
@@ -18,6 +18,8 @@ exports.replaceRenderer = ({
 
     const app = (
         <JssProvider registry={pageContext.sheetsRegistry} generateClassName={pageContext.generateClassName} >
+
+
             {/* <StyleSheetManager sheet={sheet.instance}>
                 {React.cloneElement(bodyComponent, {
                     pageContext,
@@ -39,8 +41,8 @@ exports.replaceRenderer = ({
             id="server-side-jss"
             key="server-side-jss"
             dangerouslySetInnerHTML={{ __html: pageContext.sheetsRegistry.toString() }}
-        />,
-        sheet.getStyleElement()
+        />
+        //sheet.getStyleElement()
     ]);
 
     return;
