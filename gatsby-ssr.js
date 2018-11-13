@@ -1,40 +1,47 @@
-/**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/ssr-apis/
- */
-
-// You can delete this file if you're not using it
 const React = require('react')
 const { renderToString } = require('react-dom/server')
 const JssProvider = require('react-jss/lib/JssProvider').default
 const getPageContext = require('./src/getPageContext').default
 
-function replaceRenderer({
+//import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
+
+
+exports.replaceRenderer = ({
     bodyComponent,
     replaceBodyHTMLString,
     setHeadComponents,
-}) {
-    // Get the context of the page to collect side effects
-    const muiPageContext = getPageContext()
+}) => {
 
-    const bodyHTML = renderToString(
-        <JssProvider registry={muiPageContext.sheetsRegistry}>
-            {bodyComponent}
-        </JssProvider>
-    )
+    //const sheet = new ServerStyleSheet(); //styled-components
 
-    replaceBodyHTMLString(bodyHTML)
+    const pageContext = getPageContext();
+
+    const app = (
+        <JssProvider registry={pageContext.sheetsRegistry} generateClassName={pageContext.generateClassName} >
+            {/* <StyleSheetManager sheet={sheet.instance}>
+                {React.cloneElement(bodyComponent, {
+                    pageContext,
+                })} */}
+
+            {React.cloneElement(bodyComponent, {
+                pageContext
+            })}
+            {/* </StyleSheetManager> */}
+        </JssProvider >
+    );
+
+    const body = renderToString(app);
+
+    replaceBodyHTMLString(body);
     setHeadComponents([
         <style
             type="text/css"
-            id="jss-server-side"
-            key="jss-server-side"
-            dangerouslySetInnerHTML={{
-                __html: muiPageContext.sheetsRegistry.toString(),
-            }}
+            id="server-side-jss"
+            key="server-side-jss"
+            dangerouslySetInnerHTML={{ __html: pageContext.sheetsRegistry.toString() }}
         />,
-    ])
-}
+        sheet.getStyleElement()
+    ]);
 
-exports.replaceRenderer = replaceRenderer
+    return;
+};
