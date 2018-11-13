@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import withRoot from "../withRoot";
 
 import Layout from '../components/layout'
 import TeamPanel from '../components/specific/TeamPanel';
@@ -13,4 +14,4 @@ const About = () => (
     </Layout>
 )
 
-export default About
+export default withRoot(About);

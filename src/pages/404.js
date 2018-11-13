@@ -1,5 +1,6 @@
 import React from 'react'
 import Layout from '../components/layout'
+import withRoot from "../withRoot";
 
 const NotFoundPage = () => (
   <Layout>
@@ -8,4 +9,4 @@ const NotFoundPage = () => (
   </Layout>
 )
 
-export default NotFoundPage
+export default withRoot(NotFoundPage);
