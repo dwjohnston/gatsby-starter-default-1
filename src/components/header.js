@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Component } from 'react'
 
 import { withStyles } from '@material-ui/core/styles';
 import * as Routes from "../routes";
@@ -8,35 +8,53 @@ import Button from './generic/typography/Button';
 import { Tabs } from '@material-ui/core';
 import NavLink from './generic/actions/NavLink';
 
-const Header = ({ classes, siteTitle }) => {
+class Header extends Component {
 
-  const [value, setValue] = useState(0);
+  state = {
+    value: 99
+  };
+  handleChangeValue = (e, v) => {
+    console.log(e, v);
+    console.log(this);
+    this.setState({ value: v });
+  };
 
-  const handleChangeValue = (event, v) => {
-    setValue(v);
+  constructor() {
+    super();
+
+    console.log("construct");
   }
 
-  return (
-    <header className={classes.root}>
-      <div>
-        <Link to={Routes.HOME}> <H1>{siteTitle}</H1></Link>
-      </div>
-      <nav className={classes.nav}>
+  render() {
+
+    console.log(this);
+    const { classes, siteTitle } = this.props;
+    const { value } = this.state;
+    return (
+      <header className={classes.root}>
+        <div>
+          <Link to={Routes.HOME}> <H1>{siteTitle}</H1></Link>
+        </div>
+
+        {value}
+        <nav className={classes.nav}>
 
 
-        <Tabs
-          value={value}
-          onChange={handleChangeValue}
-          indicatorColor="secondary"
-        >
-          <NavLink to={Routes.ABOUT} label="About Us" />
-          <NavLink to={Routes.BLOG} label="Blog" />
-        </Tabs>
+          <Tabs
+            value={value}
+            onChange={this.handleChangeValue}
+            indicatorColor="secondary"
+          >
+            <NavLink to={Routes.ABOUT} label="About Us" value={0} />
+            <NavLink to={Routes.BLOG} label="Blog" value={1} />
+          </Tabs>
 
-      </nav>
-    </header >
-  );
-};
+        </nav>
+      </header >
+    );
+  }
+
+}
 
 const styles = theme => ({
   root: {

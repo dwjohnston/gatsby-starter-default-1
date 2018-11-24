@@ -5,10 +5,13 @@ import Layout from '../components/layout'
 import Image from '../components/image'
 
 const IndexPage = () => (
-  <Layout>
+  <>
     <Image name="homepage" />
 
-  </Layout>
+  </>
 )
 
-export default withRoot(IndexPage)
+export default
+  //withRoot(
+  IndexPage
+   //)

@@ -24,8 +24,8 @@ const TeamPanel = ({ classes, data }) => {
                         description: "I'm experienced with WordPress, React and GraphQL"
                     }
 
-                ].map(v => <Grid item xs={12} md={6} lg={4} xl={3}>
-                    <PersonPanel person={v} key={v.id} />
+                ].map(v => <Grid item xs={12} md={6} lg={4} xl={3} key={v.id}>
+                    <PersonPanel person={v} />
                 </Grid>)}
 
             </Grid>
