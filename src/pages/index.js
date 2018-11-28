@@ -6,7 +6,7 @@ import Image from '../components/image'
 import P from "../components/generic/typography/P";
 const IndexPage = () => (
   <>
-    <P> If you're interested in getting involved - please contact us at <a href="mailto:mwcc@blacksheepcode.com">mwcc@blacksheepcode.com</a> </P>
+    <P> If you're interested in getting involved - please contact us at <a href="mailto:david@blacksheepcode.com">david@blacksheepcode.com</a> </P>
 
     <Image name="homepage" />
 
